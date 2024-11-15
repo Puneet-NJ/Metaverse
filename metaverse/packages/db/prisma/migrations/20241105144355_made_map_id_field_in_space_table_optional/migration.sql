@@ -1,0 +1,10 @@
+-- DropForeignKey
+ALTER TABLE "Space" DROP CONSTRAINT "Space_mapId_fkey";
+
+-- AlterTable
+ALTER TABLE "Space" ALTER COLUMN "height" DROP NOT NULL,
+ALTER COLUMN "width" DROP NOT NULL,
+ALTER COLUMN "mapId" DROP NOT NULL;
+
+-- AddForeignKey
+ALTER TABLE "Space" ADD CONSTRAINT "Space_mapId_fkey" FOREIGN KEY ("mapId") REFERENCES "Map"("id") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -1,0 +1,27 @@
+{
+	"name": "@repo/db",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"dev": "tsc --watch",
+		"build": "tsc -b",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"exports": {
+		"./client": {
+			"default": "./dist/index.js",
+			"types": "./src/index.ts"
+		}
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"@prisma/client": "5.22.0",
+		"cuid": "^3.0.0"
+	},
+	"devDependencies": {
+		"prisma": "5.22.0"
+	}
+}

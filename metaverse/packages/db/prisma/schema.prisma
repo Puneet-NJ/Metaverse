@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  password String 
+  role     Roles
+
+  avatarId String?
+  avatar   Avatar? @relation(fields: [avatarId], references: [id])
+
+  space    Space[]
+}
+
+model Avatar {
+  id       String @id @default(cuid())
+  imageUrl String
+  name     String
+
+  user     User[]
+}
+
+model Element {
+  id           String @id @default(cuid())
+  height       Int
+  width        Int
+  imageUrl     String
+  static       Boolean
+
+  mapElement   MapElements[]
+
+  spaceElement SpaceElements[]
+}
+
+model Space {
+  id            String @id @default(cuid())
+  height        Int 
+  width         Int  
+  name          String
+  thumbnail     String?
+
+  spaceElements SpaceElements[]
+
+  creatorId     String
+  creator       User @relation(fields: [creatorId],references: [id])
+}
+
+model SpaceElements {
+  id        String @id @default(cuid())
+  x         Int
+  y         Int
+
+  spaceId   String
+  space     Space @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  elementId String 
+  element   Element @relation(fields: [elementId], references: [id])
+}
+
+model Map {
+  id          String @id @default(cuid())
+  name        String
+  height      Int
+  width       Int
+  thumbnail   String
+
+  mapElements MapElements[]
+}
+
+model MapElements {
+  id         String @id @default(cuid())
+  x          Int
+  y          Int
+  
+  elementId  String 
+  element    Element @relation(fields: [elementId], references: [id])
+
+  mapId      String
+  map        Map @relation(fields: [mapId], references: [id])
+}
+
+enum Roles {
+  User
+  Admin
+}
